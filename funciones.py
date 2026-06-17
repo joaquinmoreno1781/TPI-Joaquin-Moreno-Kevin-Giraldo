@@ -2,7 +2,23 @@ import csv
 
 Archivo_CSV = "Paises.csv"
 Campos = ["Nombre","Poblacion","Superficie","Continente"]
-
+def validacion_letras(texto):
+    if not texto.isalpha():
+        print("Error.Solo letras")
+        return False
+    return True
+def validacion_numero(numero):
+    if not numero.isdigit():
+        print("Error.Solo numeros")
+        return False
+    return True
+def validacion_float(numero):
+    try:
+        float(numero)
+        return True
+    except ValueError:
+        print("Error. Debe ser un numero")
+        return False
 def validacion_nombre(nombre, campos):
     if nombre.strip() == "":
         raise ValueError(f"{campos} no puede estar vacío")
@@ -34,10 +50,19 @@ def agregar_pais(campos):
     try:
         nombre= input("Nombre del pais: ")
         validacion_nombre(nombre, campos[0])
-        
-        poblacion=int(input("Poblacion: "))
-        superficie= float(input("Superficie: "))
+        if not validacion_letras(nombre):
+            return
+        poblacion=input("Poblacion: ")
+        validacion_numero(poblacion)
+        poblacion = int(poblacion)
+        validacion_numerica(poblacion, campos[1])
+        superficie= input("Superficie: ")
+        if not validacion_float(superficie):
+            return
+        superficie = float(superficie)
+        validacion_numerica(superficie, campos[2])
         continente = input("Continente: ")
+        validacion_nombre(continente, campos[3])
         with open(Archivo_CSV, "a", newline="", encoding="utf-8") as archivo:
             writer = csv.writer(archivo)
             writer.writerow([nombre, poblacion, superficie, continente])
