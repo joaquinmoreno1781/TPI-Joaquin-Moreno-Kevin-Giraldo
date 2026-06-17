@@ -45,7 +45,12 @@ def menu():
         print("5.Ordenar paises")
         print("6.Estadisticas")
         print("7. Salir")
-
+import os
+def crear_csv():
+    if not os.path.exists(Archivo_CSV):
+        with open(Archivo_CSV, "w", newline="", encoding="utf-8") as archivo:
+            writer = csv.writer(archivo)
+            writer.writerow(Campos)
 def agregar_pais(campos):
     try:
         nombre= input("Nombre del pais: ")
@@ -68,3 +73,48 @@ def agregar_pais(campos):
             writer.writerow([nombre, poblacion, superficie, continente])
     except ValueError as error:
         print(error)
+def actualizar_datos(paises):
+    try:
+        nombre = input("Ingrese el nombre del país a actualizar: ")
+        validar_pais_existente(nombre, paises)
+        for pais in paises:
+            if pais["Nombre"].lower() == nombre.lower():
+                poblacion = input("Nueva población: ")
+                if not validacion_numero(poblacion):
+                    return
+                poblacion = int(poblacion)
+                validacion_numerica(
+                    poblacion,
+                    "La población"
+                )
+                superficie = input("Nueva superficie: ")
+                if not validacion_float(superficie):
+                    return
+                superficie = float(superficie)
+                validacion_numerica(
+                    superficie,
+                    "La superficie"
+                )
+                pais["Poblacion"] = poblacion
+                pais["Superficie"] = superficie
+                guardar_paises(paises)
+                print("Datos actualizados correctamente")
+                return
+    except ValueError as error:
+        print(error)
+def leer_paises():
+    paises = []
+    with open(Archivo_CSV, "r", encoding="utf-8") as archivo:
+        reader = csv.DictReader(archivo)
+        for fila in reader:
+            paises.append(fila)
+    return paises
+def guardar_paises(paises):
+    with open(Archivo_CSV, "w", newline="", encoding="utf-8") as archivo:
+        writer = csv.DictWriter(
+            archivo,
+            fieldnames=Campos
+        )
+        writer.writeheader()
+        for pais in paises:
+            writer.writerow(pais)
