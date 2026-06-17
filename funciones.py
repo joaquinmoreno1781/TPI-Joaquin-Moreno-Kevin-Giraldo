@@ -42,4 +42,4 @@ def agregar_pais(campos):
             writer = csv.writer(archivo)
             writer.writerow([nombre, poblacion, superficie, continente])
     except ValueError as error:
-        print("error")
+        print(error)
