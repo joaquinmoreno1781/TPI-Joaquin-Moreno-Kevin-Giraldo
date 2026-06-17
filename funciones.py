@@ -25,5 +25,6 @@ def menu():
         print("1. Agregar país")
         print("2. Buscar país")
         print("3. Salir")
+        print
         
         
