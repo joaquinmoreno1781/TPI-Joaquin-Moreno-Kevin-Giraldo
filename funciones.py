@@ -1,3 +1,7 @@
+import csv
+
+Archivo_CSV = "Paises.csv"
+Campos = ["Nombre","Poblacion","Superficie","Continente"]
 def validacion_nombre(nombre):
     if nombre.strip() == "":
         raise ValueError("El nombre no puede estar vacio")
@@ -21,3 +25,4 @@ def menu():
         print("1. Agregar país")
         print("2. Buscar país")
         print("3. Salir")
+        
