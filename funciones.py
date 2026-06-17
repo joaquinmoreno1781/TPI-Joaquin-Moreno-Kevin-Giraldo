@@ -3,9 +3,9 @@ import csv
 Archivo_CSV = "Paises.csv"
 Campos = ["Nombre","Poblacion","Superficie","Continente"]
 
-def validacion_nombre(texto, campo):
-    if texto.strip() == "":
-        raise ValueError(f"{campo} no puede estar vacío")
+def validacion_nombre(nombre, campos):
+    if nombre.strip() == "":
+        raise ValueError(f"{campos} no puede estar vacío")
 
 def validacion_numerica(valor, campo):
     if valor <= 0:
@@ -30,11 +30,16 @@ def menu():
         print("6.Estadisticas")
         print("7. Salir")
 
-def agregar_pais(nombre, poblacion, superficie, continente):
-    nombre= input("Nombre del pais: ")
-    poblacion=int(input("Poblacion: "))
-    superficie= float(input("Superficie: "))
-    continente = input("Continente: ")
-    with open(Archivo_CSV, "a", newline="", encoding="utf-8") as archivo:
+def agregar_pais(campos):
+    try:
+        nombre= input("Nombre del pais: ")
+        validacion_nombre(nombre, campos[0])
         
-        
+        poblacion=int(input("Poblacion: "))
+        superficie= float(input("Superficie: "))
+        continente = input("Continente: ")
+        with open(Archivo_CSV, "a", newline="", encoding="utf-8") as archivo:
+            writer = csv.writer(archivo)
+            writer.writerow([nombre, poblacion, superficie, continente])
+    except ValueError as error:
+        print("error")
