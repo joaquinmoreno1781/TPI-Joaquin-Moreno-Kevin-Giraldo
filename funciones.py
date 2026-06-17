@@ -22,9 +22,19 @@ def validar_pais_existente(nombre, paises):
 
 def menu():
         print("Bienvenido al menú principal")
-        print("1. Agregar país")
-        print("2. Buscar país")
-        print("3. Salir")
-        print
+        print("1.Agregar país")
+        print("2.Actualizar datos de un pais")
+        print("3.Buscar país")
+        print("4.Filtrar paises cargados")
+        print("5.Ordenar paises")
+        print("6.Estadisticas")
+        print("7. Salir")
+
+def agregar_pais(nombre, poblacion, superficie, continente):
+    nombre= input("Nombre del pais: ")
+    poblacion=int(input("Poblacion: "))
+    superficie= float(input("Superficie: "))
+    continente = input("Continente: ")
+    with open(Archivo_CSV, "a", newline="", encoding="utf-8") as archivo:
         
         
