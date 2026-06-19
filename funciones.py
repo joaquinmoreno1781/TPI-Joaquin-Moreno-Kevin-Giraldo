@@ -2,28 +2,33 @@ import csv
 
 Archivo_CSV = "Paises.csv"
 Campos = ["Nombre","Poblacion","Superficie","Continente"]
-def validar_continente(continente):
-    continentes = [
-        "america",
-        "europa",
-        "asia",
-        "africa",
-        "oceania",
-        "antartida"
-    ]
-    if continente.lower() not in continentes:
-        print("Error. Continente inválido")
-        return False
-    return True
-def validacion_letras(texto):
-    if not texto.isalpha():
-        print("Error.Solo letras")
-        return False
-    return True
+def pais_existe(nombre):
+    paises = leer_paises()
+    for pais in paises:
+        if pais["Nombre"].lower() == nombre.lower():
+            return True
+    return False
 def validacion_numero(numero):
     if not numero.isdigit():
         print("Error.Solo numeros")
         return False
+    return True
+def mostrar_pais(pais):
+    print("-" * 40)
+    print(f"Nombre      : {pais['Nombre']}")
+    print(f"Población   : {pais['Poblacion']} hab.")
+    print(f"Superficie  : {pais['Superficie']} km²")
+    print(f"Continente  : {pais['Continente']}")
+    print("-" * 40)
+def validacion_nombre_pais(texto):
+    texto = texto.strip()
+    if texto == "":
+        print("Error. No puede estar vacío")
+        return False
+    for caracter in texto:
+        if not (caracter.isalpha() or caracter == " "):
+            print("Error. Solo se permiten letras y espacios")
+            return False
     return True
 def validacion_float(numero):
     try:
@@ -69,28 +74,51 @@ def crear_csv():
             writer.writerow(Campos)
 def agregar_pais(campos):
     try:
-        nombre= input("Nombre del pais: ").strip().capitalize()
+        nombre = input("Nombre del pais: ").strip().title()
         validacion_nombre(nombre, campos[0])
-        if not validacion_letras(nombre):
+        if not validacion_nombre_pais(nombre):
             return
-        poblacion=input("Poblacion: ")
-        validacion_numero(poblacion)
+        if pais_existe(nombre):
+            print("Error. El país ya existe")
+            return
+        poblacion = input("Poblacion: ")
+        if not validacion_numero(poblacion):
+            return
         poblacion = int(poblacion)
         validacion_numerica(poblacion, campos[1])
-        superficie= input("Superficie: ")
+        superficie = input("Superficie:")
         if not validacion_float(superficie):
             return
         superficie = float(superficie)
         validacion_numerica(superficie, campos[2])
-        continente = input("Continente: ").strip().capitalize()
-        validacion_nombre(continente, campos[3])
-        if not validacion_letras(continente):
-            return
-        if not validar_continente(continente):
-            return
+        print("\nSeleccione un continente:")
+        print("1. America")
+        print("2. Europa")
+        print("3. Asia")
+        print("4. Africa")
+        print("5. Oceania")
+        print("6. Antartida")
+        opcion_continente = input("Ingrese una opcion: ")
+        match opcion_continente:
+            case "1":
+                continente = "America"
+            case "2":
+                continente = "Europa"
+            case "3":
+                continente = "Asia"
+            case "4":
+                continente = "Africa"
+            case "5":
+                continente = "Oceania"
+            case "6":
+                continente = "Antartida"
+            case _:
+                print("Error. Opcion invalida")
+                return
         with open(Archivo_CSV, "a", newline="", encoding="utf-8") as archivo:
             writer = csv.writer(archivo)
             writer.writerow([nombre, poblacion, superficie, continente])
+        print("País agregado correctamente")
     except ValueError as error:
         print(error)
 def actualizar_datos(paises):
@@ -145,7 +173,7 @@ def buscar_pais(paises):
         for pais in encontrados:
             print(f"Nombre: {pais['Nombre']}")
             print(f"Población: {pais['Poblacion']}")
-            print(f"Superficie: {pais['Superficie']}")
+            print(f"Superficie: {pais['Superficie']} km²")
             print(f"Continente: {pais['Continente']}")
             print("-" * 30)
     except ValueError as error:
@@ -158,11 +186,34 @@ def filtrar_paises(paises):
     opcion = input("Seleccione una opción: ")
     match opcion:
         case "1":
-            continente = input("Ingrese el continente: ").strip().capitalize()
+            print("\nSeleccione un continente:")
+            print("1. America")
+            print("2. Europa")
+            print("3. Asia")
+            print("4. Africa")
+            print("5. Oceania")
+            print("6. Antartida")
+            opcion_continente = input("Ingrese una opcion: ")
+            match opcion_continente:
+                case "1":
+                    continente = "America"
+                case "2":
+                    continente = "Europa"
+                case "3":
+                    continente = "Asia"
+                case "4":
+                    continente = "Africa"
+                case "5":
+                    continente = "Oceania"
+                case "6":
+                    continente = "Antartida"
+                case _:
+                    print("Error. Opcion invalida")
+                    return
             encontrado = False
             for pais in paises:
                 if pais["Continente"].lower() == continente.lower():
-                    print(pais)
+                    mostrar_pais(pais)
                     encontrado = True
             if not encontrado:
                 print("No se encontraron países en ese continente.")
@@ -175,12 +226,16 @@ def filtrar_paises(paises):
                 return
             minimo = int(minimo)
             maximo = int(maximo)
-            validacion_rango(minimo, maximo)
+            try:
+                validacion_rango(minimo, maximo)
+            except ValueError as error:
+                print(error)
+                return
             encontrado = False
             for pais in paises:
                 poblacion = int(pais["Poblacion"])
                 if minimo <= poblacion <= maximo:
-                    print(pais)
+                    mostrar_pais(pais)
                     encontrado = True
             if not encontrado:
                 print("No se encontraron países en ese rango de población.")
@@ -193,12 +248,16 @@ def filtrar_paises(paises):
                 return
             minimo = float(minimo)
             maximo = float(maximo)
-            validacion_rango(minimo, maximo)
+            try:
+                validacion_rango(minimo, maximo)
+            except ValueError as error:
+                print(error)
+                return
             encontrado = False
             for pais in paises:
                 superficie = float(pais["Superficie"])
                 if minimo <= superficie <= maximo:
-                    print(pais)
+                    mostrar_pais(pais)
                     encontrado = True
             if not encontrado:
                 print("No se encontraron países en ese rango de superficie.")
@@ -247,7 +306,7 @@ def ordenar_paises(paises):
     for pais in paises:
         print(f"Nombre: {pais['Nombre']}")
         print(f"Población: {pais['Poblacion']}")
-        print(f"Superficie: {pais['Superficie']}")
+        print(f"Superficie: {pais['Superficie']} km²")
         print(f"Continente: {pais['Continente']}")
         print("-" * 30)
 def estadisticas(paises):
@@ -267,13 +326,13 @@ def estadisticas(paises):
             cantidad_continente[continente] += 1
         else:
             cantidad_continente[continente] = 1
-        promedio_poblacion = suma_poblacion / len(paises)
-        promedio_superficie = suma_superficie / len(paises)
+    promedio_poblacion = suma_poblacion / len(paises)
+    promedio_superficie = suma_superficie / len(paises)
     print("----Estadísticas----")
     print(f"País con mayor población: {mayor_poblacion['Nombre']} ({mayor_poblacion['Poblacion']})")
     print(f"País con menor población: {menor_poblacion['Nombre']} ({menor_poblacion['Poblacion']})")
     print(f"Promedio de población: {promedio_poblacion:.2f}")
-    print(f"Promedio de superficie: {promedio_superficie:.2f}")
+    print(f"Promedio de superficie: {promedio_superficie:.2f} km²")
     print("Cantidad de países por continente:")
     for continente, cantidad in cantidad_continente.items():
         print(f"{continente}: {cantidad}")
