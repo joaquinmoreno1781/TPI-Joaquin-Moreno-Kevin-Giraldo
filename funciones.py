@@ -1,18 +1,22 @@
 import csv
-
+# Nombre del archivo CSV donde se almacenan los datos
 Archivo_CSV = "Paises.csv"
+# Encabezados del archivo CSV
 Campos = ["Nombre","Poblacion","Superficie","Continente"]
+# Verifica si un país ya existe en el archivo
 def pais_existe(nombre):
     paises = leer_paises()
     for pais in paises:
         if pais["Nombre"].lower() == nombre.lower():
             return True
     return False
+# Valida que el dato ingresado sea numérico entero
 def validacion_numero(numero):
     if not numero.isdigit():
         print("Error.Solo numeros")
         return False
     return True
+# Muestra los datos de un país con formato
 def mostrar_pais(pais):
     print("-" * 40)
     print(f"Nombre      : {pais['Nombre']}")
@@ -20,6 +24,7 @@ def mostrar_pais(pais):
     print(f"Superficie  : {pais['Superficie']} km²")
     print(f"Continente  : {pais['Continente']}")
     print("-" * 40)
+# Valida que el nombre del país solo contenga letras y espacios
 def validacion_nombre_pais(texto):
     texto = texto.strip()
     if texto == "":
@@ -30,6 +35,7 @@ def validacion_nombre_pais(texto):
             print("Error. Solo se permiten letras y espacios")
             return False
     return True
+# Valida que el dato ingresado pueda convertirse a número decimal
 def validacion_float(numero):
     try:
         float(numero)
@@ -37,17 +43,19 @@ def validacion_float(numero):
     except ValueError:
         print("Error. Debe ser un numero")
         return False
+# Verifica que el nombre ingresado no esté vacío
 def validacion_nombre(nombre, campos):
     if nombre.strip() == "":
         raise ValueError(f"{campos} no puede estar vacío")
-
+# Verifica que un valor numérico sea mayor a cero
 def validacion_numerica(valor, campo):
     if valor <= 0:
         raise ValueError(f"{campo} debe ser mayor a 0")
+# Valida que el valor mínimo no sea mayor que el máximo
 def validacion_rango(minimo, maximo):
     if minimo > maximo:
         raise ValueError("El mínimo no puede ser mayor al máximo")
-
+# Busca un país dentro de la lista de países cargados
 def validar_pais_existente(nombre, paises):
     encontrados = []
     for pais in paises:
@@ -56,7 +64,7 @@ def validar_pais_existente(nombre, paises):
     if len(encontrados) == 0:
         raise ValueError("El país no existe")
     return encontrados
-
+# Muestra el menú principal del programa
 def menu():
         print("Bienvenido al menú principal")
         print("1.Agregar país")
@@ -67,11 +75,13 @@ def menu():
         print("6.Estadisticas")
         print("7. Salir")
 import os
+# Crea el archivo CSV si no existe
 def crear_csv():
     if not os.path.exists(Archivo_CSV):
         with open(Archivo_CSV, "w", newline="", encoding="utf-8") as archivo:
             writer = csv.writer(archivo)
             writer.writerow(Campos)
+# Permite agregar un nuevo país al archivo
 def agregar_pais(campos):
     try:
         nombre = input("Nombre del pais: ").strip().title()
@@ -121,6 +131,7 @@ def agregar_pais(campos):
         print("País agregado correctamente")
     except ValueError as error:
         print(error)
+# Actualiza la población y superficie de un país existente
 def actualizar_datos(paises):
     try:
         nombre = input("Ingrese el nombre del país a actualizar: ").strip()
@@ -148,6 +159,7 @@ def actualizar_datos(paises):
         print("Datos actualizados correctamente")
     except ValueError as error:
         print(error)
+# Lee todos los países almacenados en el CSV
 def leer_paises():
     paises = []
     with open(Archivo_CSV, "r", encoding="utf-8") as archivo:
@@ -155,6 +167,7 @@ def leer_paises():
         for fila in reader:
             paises.append(fila)
     return paises
+# Guarda la lista de países en el archivo CSV
 def guardar_paises(paises):
     with open(Archivo_CSV, "w", newline="", encoding="utf-8") as archivo:
         writer = csv.DictWriter(
@@ -164,7 +177,7 @@ def guardar_paises(paises):
         writer.writeheader()
         for pais in paises:
             writer.writerow(pais)
-
+# Busca uno o más países por nombre
 def buscar_pais(paises):
     try:
         nombre = input("Ingrese el nombre del país a buscar: ").strip().capitalize()
@@ -178,6 +191,7 @@ def buscar_pais(paises):
             print("-" * 30)
     except ValueError as error:
         print(error)
+# Filtra países por continente, población o superficie
 def filtrar_paises(paises):
     print("----Filtrar Paises----")
     print("1. Por continente")
@@ -263,16 +277,16 @@ def filtrar_paises(paises):
                 print("No se encontraron países en ese rango de superficie.")
         case _:
             print("Opción no válida.")
-            
+# Obtiene el nombre del país para ordenar alfabéticamente                        
 def obtener_nombre(pais):
     return pais["Nombre"].lower()
-
+# Obtiene la población del país para ordenar
 def obtener_poblacion(pais):
     return int(pais["Poblacion"])
-
+# Obtiene la superficie del país para ordenar
 def obtener_superficie(pais):
     return float(pais["Superficie"])
-
+# Ordena los países según el criterio elegido por el usuario
 def ordenar_paises(paises):
     print("----Ordenar Países----")
     print("1. Nombre")
@@ -309,6 +323,7 @@ def ordenar_paises(paises):
         print(f"Superficie: {pais['Superficie']} km²")
         print(f"Continente: {pais['Continente']}")
         print("-" * 30)
+# Calcula y muestra estadísticas generales de los países
 def estadisticas(paises):
     if len(paises) == 0:
         print("No hay países cargados para calcular estadísticas.")
