@@ -15,3 +15,6 @@ while True:
         case "4":
             paises = leer_paises()
             filtrar_paises(paises)
+        case "5":
+            paises = leer_paises()
+            ordenar_paises(paises)

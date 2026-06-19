@@ -155,25 +155,85 @@ def filtrar_paises(paises):
                 print("No se encontraron países en ese continente.")
         case "2":
             minimo = input("Población mínima: ")
+            if not validacion_numero(minimo):
+                return
             maximo = input("Población máxima: ")
+            if not validacion_numero(maximo):
+                return
+            minimo = int(minimo)
+            maximo = int(maximo)
             validacion_rango(minimo, maximo)
             encontrado = False
             for pais in paises:
-                if minimo <= pais["Poblacion"] <= maximo:
+                poblacion = int(pais["Poblacion"])
+                if minimo <= poblacion <= maximo:
                     print(pais)
                     encontrado = True
             if not encontrado:
                 print("No se encontraron países en ese rango de población.")
         case "3":
             minimo = input("Superficie mínima: ")
+            if not validacion_float(minimo):
+                return
             maximo = input("Superficie máxima: ")
+            if not validacion_float(maximo):
+                return
+            minimo = float(minimo)
+            maximo = float(maximo)
             validacion_rango(minimo, maximo)
             encontrado = False
             for pais in paises:
-                if minimo <= pais["Superficie"] <= maximo:
+                superficie = float(pais["Superficie"])
+                if minimo <= superficie <= maximo:
                     print(pais)
                     encontrado = True
             if not encontrado:
                 print("No se encontraron países en ese rango de superficie.")
         case _:
             print("Opción no válida.")
+            
+def obtener_nombre(pais):
+    return pais["Nombre"].lower()
+
+def obtener_poblacion(pais):
+    return int(pais["Poblacion"])
+
+def obtener_superficie(pais):
+    return float(pais["Superficie"])
+
+def ordenar_paises(paises):
+    print("----Ordenar Países----")
+    print("1. Nombre")
+    print("2. Población")
+    print("3. Superficie")
+    opcion = input("Seleccione una opción: ")
+    orden = input("Ascendente (A) o Descendente (D): ").upper()
+    if orden == "D":
+        reversa = True
+    else:
+        reversa = False
+    match opcion:
+        case "1":
+            paises.sort(
+                key=obtener_nombre,
+                reverse=reversa
+            )
+        case "2":
+            paises.sort(
+                key=obtener_poblacion,
+                reverse=reversa
+            )
+        case "3":
+            paises.sort(
+                key=obtener_superficie,
+                reverse=reversa
+            )
+        case _:
+            print("Opción no válida")
+            return
+    for pais in paises:
+        print(f"Nombre: {pais['Nombre']}")
+        print(f"Población: {pais['Poblacion']}")
+        print(f"Superficie: {pais['Superficie']}")
+        print(f"Continente: {pais['Continente']}")
+        print("-" * 30)
