@@ -12,3 +12,6 @@ while True:
         case "3":
             paises = leer_paises()
             buscar_pais(paises)
+        case "4":
+            paises = leer_paises()
+            filtrar_paises(paises)

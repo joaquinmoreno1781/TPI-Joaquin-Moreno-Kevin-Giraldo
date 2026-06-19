@@ -137,3 +137,43 @@ def buscar_pais(paises):
             print("-" * 30)
     except ValueError as error:
         print(error)
+def filtrar_paises(paises):
+    print("----Filtrar Paises----")
+    print("1. Por continente")
+    print("2. Por población")
+    print("3. Por superficie")
+    opcion = input("Seleccione una opción: ")
+    match opcion:
+        case "1":
+            continente = input("Ingrese el continente: ")
+            encontrado = False
+            for pais in paises:
+                if pais["Continente"].lower() == continente.lower():
+                    print(pais)
+                    encontrado = True
+            if not encontrado:
+                print("No se encontraron países en ese continente.")
+        case "2":
+            minimo = input("Población mínima: ")
+            maximo = input("Población máxima: ")
+            validacion_rango(minimo, maximo)
+            encontrado = False
+            for pais in paises:
+                if minimo <= pais["Poblacion"] <= maximo:
+                    print(pais)
+                    encontrado = True
+            if not encontrado:
+                print("No se encontraron países en ese rango de población.")
+        case "3":
+            minimo = input("Superficie mínima: ")
+            maximo = input("Superficie máxima: ")
+            validacion_rango(minimo, maximo)
+            encontrado = False
+            for pais in paises:
+                if minimo <= pais["Superficie"] <= maximo:
+                    print(pais)
+                    encontrado = True
+            if not encontrado:
+                print("No se encontraron países en ese rango de superficie.")
+        case _:
+            print("Opción no válida.")
