@@ -95,31 +95,29 @@ def agregar_pais(campos):
         print(error)
 def actualizar_datos(paises):
     try:
-        nombre = input("Ingrese el nombre del país a actualizar: ").strip().capitalize()
-        validar_pais_existente(nombre, paises)
-        for pais in paises:
-            if pais["Nombre"].lower() == nombre.lower():
-                poblacion = input("Nueva población: ")
-                if not validacion_numero(poblacion):
-                    return
-                poblacion = int(poblacion)
-                validacion_numerica(
-                    poblacion,
-                    "La población"
-                )
-                superficie = input("Nueva superficie: ")
-                if not validacion_float(superficie):
-                    return
-                superficie = float(superficie)
-                validacion_numerica(
-                    superficie,
-                    "La superficie"
-                )
-                pais["Poblacion"] = poblacion
-                pais["Superficie"] = superficie
-                guardar_paises(paises)
-                print("Datos actualizados correctamente")
+        nombre = input("Ingrese el nombre del país a actualizar: ").strip()
+        encontrados = validar_pais_existente(nombre, paises)
+        for pais in encontrados:
+            poblacion = input("Nueva población: ")
+            if not validacion_numero(poblacion):
                 return
+            poblacion = int(poblacion)
+            validacion_numerica(
+                poblacion,
+                "La población"
+            )
+            superficie = input("Nueva superficie: ")
+            if not validacion_float(superficie):
+                return
+            superficie = float(superficie)
+            validacion_numerica(
+                superficie,
+                "La superficie"
+            )
+            pais["Poblacion"] = poblacion
+            pais["Superficie"] = superficie
+        guardar_paises(paises)
+        print("Datos actualizados correctamente")
     except ValueError as error:
         print(error)
 def leer_paises():
@@ -271,11 +269,11 @@ def estadisticas(paises):
             cantidad_continente[continente] = 1
         promedio_poblacion = suma_poblacion / len(paises)
         promedio_superficie = suma_superficie / len(paises)
-        print("----Estadísticas----")
-        print(f"País con mayor población: {mayor_poblacion['Nombre']} ({mayor_poblacion['Poblacion']})")
-        print(f"País con menor población: {menor_poblacion['Nombre']} ({menor_poblacion['Poblacion']})")
-        print(f"Promedio de población: {promedio_poblacion:.2f}")
-        print(f"Promedio de superficie: {promedio_superficie:.2f}")
-        print("Cantidad de países por continente:")
-        for continente, cantidad in cantidad_continente.items():
-            print(f"{continente}: {cantidad}")
+    print("----Estadísticas----")
+    print(f"País con mayor población: {mayor_poblacion['Nombre']} ({mayor_poblacion['Poblacion']})")
+    print(f"País con menor población: {menor_poblacion['Nombre']} ({menor_poblacion['Poblacion']})")
+    print(f"Promedio de población: {promedio_poblacion:.2f}")
+    print(f"Promedio de superficie: {promedio_superficie:.2f}")
+    print("Cantidad de países por continente:")
+    for continente, cantidad in cantidad_continente.items():
+        print(f"{continente}: {cantidad}")

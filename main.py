@@ -21,3 +21,8 @@ while True:
         case "6":
             paises = leer_paises()
             estadisticas(paises)
+        case "7":
+            print("Saliendo del programa HASTA PRONTO!")
+            break
+        case _:
+            print("Opcion no valida, por favor ingrese un numero del menu")
