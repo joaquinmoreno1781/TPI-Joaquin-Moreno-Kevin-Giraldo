@@ -18,3 +18,6 @@ while True:
         case "5":
             paises = leer_paises()
             ordenar_paises(paises)
+        case "6":
+            paises = leer_paises()
+            estadisticas(paises)
