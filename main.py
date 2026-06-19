@@ -9,3 +9,6 @@ while True:
         case "2":
             paises = leer_paises()
             actualizar_datos(paises)
+        case "3":
+            paises = leer_paises()
+            buscar_pais(paises)

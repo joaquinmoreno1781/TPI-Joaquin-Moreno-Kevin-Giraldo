@@ -29,12 +29,15 @@ def validacion_numerica(valor, campo):
 def validacion_rango(minimo, maximo):
     if minimo > maximo:
         raise ValueError("El mínimo no puede ser mayor al máximo")
-def validar_pais_existente(nombre, paises):
-    for pais in paises:
-        if pais["Nombre"].lower() == nombre.lower():
-            return
 
-    raise ValueError("El país no existe")
+def validar_pais_existente(nombre, paises):
+    encontrados = []
+    for pais in paises:
+        if nombre.lower() in pais["Nombre"].lower():
+            encontrados.append(pais)
+    if len(encontrados) == 0:
+        raise ValueError("El país no existe")
+    return encontrados
 
 def menu():
         print("Bienvenido al menú principal")
@@ -68,6 +71,8 @@ def agregar_pais(campos):
         validacion_numerica(superficie, campos[2])
         continente = input("Continente: ")
         validacion_nombre(continente, campos[3])
+        if not validacion_letras(continente):
+            return
         with open(Archivo_CSV, "a", newline="", encoding="utf-8") as archivo:
             writer = csv.writer(archivo)
             writer.writerow([nombre, poblacion, superficie, continente])
@@ -118,3 +123,17 @@ def guardar_paises(paises):
         writer.writeheader()
         for pais in paises:
             writer.writerow(pais)
+
+def buscar_pais(paises):
+    try:
+        nombre = input("Ingrese el nombre del país a buscar: ")
+        validacion_nombre(nombre, Campos[0])
+        encontrados = validar_pais_existente(nombre, paises)
+        for pais in encontrados:
+            print(f"Nombre: {pais['Nombre']}")
+            print(f"Población: {pais['Poblacion']}")
+            print(f"Superficie: {pais['Superficie']}")
+            print(f"Continente: {pais['Continente']}")
+            print("-" * 30)
+    except ValueError as error:
+        print(error)
