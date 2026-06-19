@@ -2,6 +2,19 @@ import csv
 
 Archivo_CSV = "Paises.csv"
 Campos = ["Nombre","Poblacion","Superficie","Continente"]
+def validar_continente(continente):
+    continentes = [
+        "america",
+        "europa",
+        "asia",
+        "africa",
+        "oceania",
+        "antartida"
+    ]
+    if continente.lower() not in continentes:
+        print("Error. Continente inválido")
+        return False
+    return True
 def validacion_letras(texto):
     if not texto.isalpha():
         print("Error.Solo letras")
@@ -56,7 +69,7 @@ def crear_csv():
             writer.writerow(Campos)
 def agregar_pais(campos):
     try:
-        nombre= input("Nombre del pais: ")
+        nombre= input("Nombre del pais: ").strip().capitalize()
         validacion_nombre(nombre, campos[0])
         if not validacion_letras(nombre):
             return
@@ -69,9 +82,11 @@ def agregar_pais(campos):
             return
         superficie = float(superficie)
         validacion_numerica(superficie, campos[2])
-        continente = input("Continente: ")
+        continente = input("Continente: ").strip().capitalize()
         validacion_nombre(continente, campos[3])
         if not validacion_letras(continente):
+            return
+        if not validar_continente(continente):
             return
         with open(Archivo_CSV, "a", newline="", encoding="utf-8") as archivo:
             writer = csv.writer(archivo)
@@ -80,7 +95,7 @@ def agregar_pais(campos):
         print(error)
 def actualizar_datos(paises):
     try:
-        nombre = input("Ingrese el nombre del país a actualizar: ")
+        nombre = input("Ingrese el nombre del país a actualizar: ").strip().capitalize()
         validar_pais_existente(nombre, paises)
         for pais in paises:
             if pais["Nombre"].lower() == nombre.lower():
@@ -126,7 +141,7 @@ def guardar_paises(paises):
 
 def buscar_pais(paises):
     try:
-        nombre = input("Ingrese el nombre del país a buscar: ")
+        nombre = input("Ingrese el nombre del país a buscar: ").strip().capitalize()
         validacion_nombre(nombre, Campos[0])
         encontrados = validar_pais_existente(nombre, paises)
         for pais in encontrados:
@@ -145,7 +160,7 @@ def filtrar_paises(paises):
     opcion = input("Seleccione una opción: ")
     match opcion:
         case "1":
-            continente = input("Ingrese el continente: ")
+            continente = input("Ingrese el continente: ").strip().capitalize()
             encontrado = False
             for pais in paises:
                 if pais["Continente"].lower() == continente.lower():
