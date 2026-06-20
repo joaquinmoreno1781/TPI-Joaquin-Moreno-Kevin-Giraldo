@@ -135,7 +135,7 @@ def agregar_pais(campos):
 # Actualiza la población y superficie de un país existente
 def actualizar_datos(paises):
     try:
-        nombre = input("Ingrese el nombre EXACTO del país a actualizar: ").strip()
+        nombre = input("Ingrese el nombre exacto del país a actualizar: ").strip()
         encontrados = []
         for pais in paises:
             if pais["Nombre"].lower() == nombre.lower():
@@ -150,7 +150,7 @@ def actualizar_datos(paises):
                 return
             poblacion = int(poblacion)
             validacion_numerica(poblacion, "La población")
-            superficie = input("Nueva superficie: ").strip() # -> Agregado .strip() fundamental
+            superficie = input("Nueva superficie: ").strip()
             if not validacion_float(superficie):
                 return
             superficie_float = float(superficie.replace(",", "."))
