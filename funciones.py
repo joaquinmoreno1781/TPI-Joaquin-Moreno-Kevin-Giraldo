@@ -97,12 +97,12 @@ def agregar_pais(campos):
             return
         poblacion = int(poblacion)
         validacion_numerica(poblacion, campos[1])
-        superficie = input("Superficie:")
+        superficie = input("Superficie:").strip()
         if not validacion_float(superficie):
             return
-        superficie = float(superficie)
+        superficie = float(superficie.replace(",", "."))
         validacion_numerica(superficie, campos[2])
-        print("\nSeleccione un continente:")
+        print("Seleccione un continente:")
         print("1. America")
         print("2. Europa")
         print("3. Asia")
@@ -135,27 +135,28 @@ def agregar_pais(campos):
 # Actualiza la población y superficie de un país existente
 def actualizar_datos(paises):
     try:
-        nombre = input("Ingrese el nombre del país a actualizar: ").strip()
-        encontrados = validar_pais_existente(nombre, paises)
+        nombre = input("Ingrese el nombre EXACTO del país a actualizar: ").strip()
+        encontrados = []
+        for pais in paises:
+            if pais["Nombre"].lower() == nombre.lower():
+                encontrados.append(pais) 
+        if len(encontrados) == 0:
+            print("Error. El país no existe.")
+            return
         for pais in encontrados:
-            poblacion = input("Nueva población: ")
+            print(f"Modificando datos de: {pais['Nombre']}")          
+            poblacion = input("Nueva población: ").strip()
             if not validacion_numero(poblacion):
                 return
             poblacion = int(poblacion)
-            validacion_numerica(
-                poblacion,
-                "La población"
-            )
-            superficie = input("Nueva superficie: ")
+            validacion_numerica(poblacion, "La población")
+            superficie = input("Nueva superficie: ").strip() # -> Agregado .strip() fundamental
             if not validacion_float(superficie):
                 return
-            superficie_float = float((superficie).replace(",", "."))
-            validacion_numerica(
-                superficie_float,
-                "La superficie"
-            )
+            superficie_float = float(superficie.replace(",", "."))
+            validacion_numerica(superficie_float, "La superficie")
             pais["Poblacion"] = poblacion
-            pais["Superficie"] = str(superficie_float)
+            pais["Superficie"] = str(superficie_float)           
         guardar_paises(paises)
         print("Datos actualizados correctamente")
     except ValueError as error:
@@ -201,7 +202,7 @@ def filtrar_paises(paises):
     opcion = input("Seleccione una opción: ")
     match opcion:
         case "1":
-            print("\nSeleccione un continente:")
+            print("Seleccione un continente:")
             print("1. America")
             print("2. Europa")
             print("3. Asia")
