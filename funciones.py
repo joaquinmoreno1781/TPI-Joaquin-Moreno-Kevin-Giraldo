@@ -92,7 +92,7 @@ def agregar_pais(campos):
         if pais_existe(nombre):
             print("Error. El país ya existe")
             return
-        poblacion = input("Poblacion: ")
+        poblacion = input("Poblacion: ").strip()
         if not validacion_numero(poblacion):
             return
         poblacion = int(poblacion)
