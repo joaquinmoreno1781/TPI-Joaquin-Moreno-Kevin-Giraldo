@@ -38,10 +38,11 @@ def validacion_nombre_pais(texto):
 # Valida que el dato ingresado pueda convertirse a número decimal
 def validacion_float(numero):
     try:
-        float(numero)
+        numero_corregido = numero.replace(",", ".")
+        float(numero_corregido)
         return True
     except ValueError:
-        print("Error. Debe ser un numero")
+        print("Error. Debe ser un numero valido")
         return False
 # Verifica que el nombre ingresado no esté vacío
 def validacion_nombre(nombre, campos):
@@ -148,13 +149,13 @@ def actualizar_datos(paises):
             superficie = input("Nueva superficie: ")
             if not validacion_float(superficie):
                 return
-            superficie = float(superficie)
+            superficie_float = float((superficie).replace(",", "."))
             validacion_numerica(
-                superficie,
+                superficie_float,
                 "La superficie"
             )
             pais["Poblacion"] = poblacion
-            pais["Superficie"] = superficie
+            pais["Superficie"] = str(superficie_float)
         guardar_paises(paises)
         print("Datos actualizados correctamente")
     except ValueError as error:
