@@ -200,3 +200,7 @@ Tecnologías Utilizadas
 * Funciones
 * Estructuras condicionales
 * Estructuras repetitivas
+Enlace del video
+* https://youtu.be/LfhPk2hqSb4
+Enlace git
+* https://github.com/joaquinmoreno1781/TPI-Joaquin-Moreno-Kevin-Giraldo
